@@ -1,0 +1,39 @@
+name: Neo4j Restore 
+ 
+# Allows you to run this workflow manually from the Actions tab 
+on: 
+ workflow_dispatch:
+   inputs:
+     namespace: 
+       description: 'Kubernetes Namespace'
+       required: true
+       #default: 'default'
+     database: 
+       description: 'Neo4j Database name'
+       required: true
+     backupfile:
+      description: 'Backup file'
+      required: true 
+      
+jobs:
+  restore-neo4j:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout-repository
+        uses: actions/checkout@v4 
+
+      - name: Set up kubectl 
+        run: | 
+            if ! command -v kubectl &> /dev/null; then 
+            curl -LO "https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+            chmod +x kubectl 
+            mkdir -p ~/.local/bin
+            mv ./kubectl ~/.local/bin/kubectl
+            fi
+
+
+  
+
+      
+             
