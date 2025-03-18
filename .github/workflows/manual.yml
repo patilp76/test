@@ -32,11 +32,25 @@ jobs:
             mv ./kubectl ~/.local/bin/kubectl
             kubectl version --client
             fi
-      - name: Configure AWS credentials 
+      - name: Create kubeconfig
         run: |
-            echo "the aws access key id ${{ secrets.AWS_ACCESS_KEY_ID }}"
-            echo "The secret access key ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-            AWS_REGION=us-east-1
+          mkdir -p ~/.kube
+          echo '${{ secrets.KUBE_CONFIG }}' | base64 --decode > ~/.kube/config
+          
+      - name: Update the kubeconfig for eks 
+        run: |
+            # We can add the cluster name as secret as well. {{ secrets.CLUSTER_NAME }}
+            aws eks update-kubeconfig --region us-east-1 --name rd-rsp-dev-02
+
+      - name: Get Neo4j Pod Name 
+        id: get_pod 
+        run: |
+            # k get pod -n neo4j-sbx-02-dev -l  app=mydb -o jsonpath="{.items[0].metadata.name}"
+            POD_NAME=$(kubectl get pods -n ${{ github.event.inputs.namespace }} -l app=mydb -o jsonpath="{.items[0].metadata.name}")
+            echo "POD_NAME=$POD_NAME" >> GITHUB_ENV 
+     
+
+          
       
 
 
