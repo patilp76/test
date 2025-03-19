@@ -45,7 +45,7 @@ jobs:
       - name: Get Neo4j Pod Name 
         id: get_pod 
         run: |
-            # k get pod -n neo4j-sbx-02-dev -l  app=mydb -o jsonpath="{.items[0].metadata.name}"
+           
             POD_NAME=$(kubectl get pods -n ${{ github.event.inputs.namespace }} -l app=mydb -o jsonpath="{.items[0].metadata.name}")
             echo "POD_NAME=$POD_NAME" >> GITHUB_ENV 
      
