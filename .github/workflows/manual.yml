@@ -4,16 +4,23 @@ name: Neo4j Restore
 on: 
  workflow_dispatch:
    inputs:
-     namespace: 
+      environment:
+        description: "Cluster"
+        type: choice
+        options:
+          - dev
+          - stg
+          - prd
+      namespace: 
        description: 'Kubernetes Namespace'
        required: true
        #default: 'default'
-     database: 
+      database: 
        description: 'Neo4j Database name'
        required: true
-     backupfile:
-      description: 'Backup file'
-      required: true 
+      backupfile:
+       description: 'Backup file'
+       required: true 
       
 jobs:
   restore-neo4j:
