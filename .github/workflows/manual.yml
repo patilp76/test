@@ -53,7 +53,7 @@ jobs:
 
       - name: Generate Namespace and Pod name 
         run: | 
-             ENVIRONMENT=${{ inputs.environemnt }}
+             ENVIRONMENT=${{ inputs.environment }}
              TENANT_NAME=${{ inputs.tenant }}
              POD_NUMBER=${{ inputs.pod_number }}
              BACKUP_FILE=${{ inputs.backupfile }}
