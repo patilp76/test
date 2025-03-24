@@ -58,11 +58,11 @@ jobs:
              TENANT_NAME=${{ inputs.tenant }}
              POD_NUMBER=${{ inputs.pod_number }}
              BACKUP_FILE=${{ inputs.backupfile }}
-             # Generate Namespace 
+              # Generate Namespace 
              NAMESPACE="neo4j-${TENANT_NAME}-${ENVIRONMENT}"
              
-             #Generate Pod Name Based on the Statefulset 
-             if ["$POD_NUMBER" -eq "1"];then 
+              # Generate Pod Name Based on the Statefulset 
+             if ["$POD_NUMBER" -eq "1"]; then 
                POD_NAME="${NAMESPACE}-0"
              else
                POD_NAME="${NAMESPACE}-0${POD_NUMBER}-0"
