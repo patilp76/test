@@ -11,10 +11,12 @@ on:
           - dev
           - stg
           - prd
-      namespace: 
-       description: 'Kubernetes Namespace'
-       required: true
-       #default: 'default'
+      tenant: 
+        description: "Enter the tenant name"
+        required: true 
+      pod_number: 
+        description: "Enter the pod number"
+        required: true 
       database: 
        description: 'Neo4j Database name'
        required: true
@@ -43,25 +45,31 @@ jobs:
         run: | 
             which kubectl 
             kubectl version --client || echo "kubectl is not installed"
+
       - name: Create kubeconfig
         run: |
           mkdir -p ~/.kube
           echo '${{ secrets.KUBE_CONFIG }}' | base64 --decode > ~/.kube/config
-   
 
-      - name: Get Neo4j Pod Name 
-        id: get_pod 
-        run: |
-           
-            POD_NAME=$(kubectl get pods -n ${{ github.event.inputs.namespace }} -l app=mydb -o jsonpath="{.items[0].metadata.name}")
-            echo "POD_NAME=$POD_NAME" >> GITHUB_ENV 
-     
-
-          
-      
-
-
-  
-
-      
+      - name: Generate Namespace and Pod name 
+        run: | 
+             ENVIRONMENT=${{ inputs.environemnt }}
+             TENANT_NAME=${{ inputs.tenant }}
+             POD_NUMBER=${{ inputs.pod_number }}
+             BACKUP_FILE=${{ inputs.backupfile }}
+             # Generate Namespace 
+             NAMESPACE="neo4j-${TENANT_NAME}-${ENVIRONMENT}"
              
+             #Generate Pod Name Based on the Statefulset 
+             if ["$POD_NUMBER" -eq 1];then 
+               POD_NAME="${NAMESPACE}-0"
+             else
+             POD_NAME="${NAMESPACE}-0${POD_NUMBER}-0"
+             fi 
+             
+             echo "${NAMESPACE}"
+             echo "${POD_NAME}"
+
+             # Export Variables for later steps
+             echo "NAMESPACE=$NAMESPACE" >> $GITHUB_ENV
+             echo "POD_NAME=$POD_NAME" >> $GITHUB_ENV
