@@ -16,7 +16,8 @@ on:
         required: true 
       pod_number: 
         description: "Enter the pod number"
-        required: true 
+        required: true
+        type: string
       database: 
        description: 'Neo4j Database name'
        required: true
