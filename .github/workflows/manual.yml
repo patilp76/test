@@ -16,8 +16,7 @@ on:
         required: true 
       pod_number: 
         description: "Enter the pod number"
-        required: true
-        type: string
+        required: true 
       database: 
        description: 'Neo4j Database name'
        required: true
@@ -58,18 +57,18 @@ jobs:
              TENANT_NAME=${{ inputs.tenant }}
              POD_NUMBER=${{ inputs.pod_number }}
              BACKUP_FILE=${{ inputs.backupfile }}
-              # Generate Namespace 
+             # Generate Namespace 
              NAMESPACE="neo4j-${TENANT_NAME}-${ENVIRONMENT}"
-             
-              # Generate Pod Name Based on the Statefulset 
-             if ["$POD_NUMBER" -eq "1"]; then 
-               POD_NAME="${NAMESPACE}-0"
+             if ["$POD_NUMBER" -eq 1]; then
+              POD_NAME="${NAMESPACE}-0"
+             elif ["$POD_NUMBER" -lt 10 ]; then
+              POD_NAME="${NAMESPACE}-0${POD_NUMBER}-0"
              else
-               POD_NAME="${NAMESPACE}-0${POD_NUMBER}-0"
-             fi 
-             
-             echo "${NAMESPACE}"
-             echo "${POD_NAME}"
+              POD_NAME="${NAMESPACE}-0"
+             fi
+
+             echo "Namespace name is : ${NAMESPACE}"
+             echo "Pod Name is : ${POD_NAME}"
 
              # Export Variables for later steps
              echo "NAMESPACE=$NAMESPACE" >> $GITHUB_ENV
