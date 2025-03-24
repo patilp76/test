@@ -62,7 +62,7 @@ jobs:
              NAMESPACE="neo4j-${TENANT_NAME}-${ENVIRONMENT}"
              
              #Generate Pod Name Based on the Statefulset 
-             if ["$POD_NUMBER" -eq 1];then 
+             if ["$POD_NUMBER" -eq "1"];then 
                POD_NAME="${NAMESPACE}-0"
              else
                POD_NAME="${NAMESPACE}-0${POD_NUMBER}-0"
