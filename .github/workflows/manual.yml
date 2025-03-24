@@ -59,9 +59,9 @@ jobs:
              BACKUP_FILE=${{ inputs.backupfile }}
              # Generate Namespace 
              NAMESPACE="neo4j-${TENANT_NAME}-${ENVIRONMENT}"
-             if ["$POD_NUMBER" -eq 1]; then
+             if [ "$POD_NUMBER" -eq 1 ]; then
               POD_NAME="${NAMESPACE}-0"
-             elif ["$POD_NUMBER" -lt 10 ]; then
+             elif [ "$POD_NUMBER" -lt 10 ]; then
               POD_NAME="${NAMESPACE}-0${POD_NUMBER}-0"
              else
               POD_NAME="${NAMESPACE}-0"
